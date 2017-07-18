@@ -1,5 +1,6 @@
 from Tkinter import *
 import os, time, glob
+from subprocess import call
 
 multithread=False
 if multithread==True:
@@ -26,7 +27,7 @@ def update_path(value,v_or_c,quality,external_source,destination,all_dirs):
             source_files=os.listdir(external_source+'/'+i)
             #for j in range(len(source_files)):
             #    source_files[j]=external_source+'/'+i+'/'+source_files[j]
-            print source_files
+            #print source_files
 
             destination_files=os.listdir(destination+'/'+i)
 	    copy_files=[]
@@ -46,7 +47,7 @@ def update_path(value,v_or_c,quality,external_source,destination,all_dirs):
             source_files=os.listdir(external_source+'/'+i)
             #for j in range(len(source_files)):
             #    source_files[j]=external_source+'/'+i+'/'+source_files[j]
-            #print source_files
+            print source_files
 
             destination_files=os.listdir(destination+'/'+i)
 	    copy_files=[]
@@ -59,12 +60,12 @@ def update_path(value,v_or_c,quality,external_source,destination,all_dirs):
                         print j
                 	if v_or_c==1: #variable bitrate, -abr <quality> for abr type, where quality should be approximate bitrate desired, or -V<quality> for true variable bitrate, with -V5 resulting in average 132 kbps, -V2 averaging 200 kbps, and -V0 best quality. between -V0 and V9.999
 			    #command="lame -V"+quality+' '+external_source.replace(' ','\ ')+'/'+i.replace(' ','\ ').replace(r'(',r'\(').replace(r')',r'\)')+'/'+j.replace(' ','\ ').replace(r'(',r'\(').replace(r')',r'\)')+' '+destination.replace(' ','\ ')+'/'+i.replace(' ','\ ').replace(r'(',r'\(').replace(r')',r'\)')+'/'+j.replace(' ','\ ').replace(r'(',r'\(').replace(r')',r'\)')
-                            command="lame -V"+quality+' "'+external_source+'/'+i.decode('utf-8').encode('utf-8')+'/'+j.decode('utf-8').encode('utf-8')+'" "'+destination+'/'+i.decode('utf-8').encode('utf-8')+'/'+j.decode('utf-8').encode('utf-8')+'"'
+                            command=u'lame -V'+quality+' "'+external_source+'/'+i+'/'+j+'" "'+destination+'/'+i+'/'+j+'"'
                 	if v_or_c==2: #constant bitrate, for cbr, -b<quality> is regular encoding, -q0 -b<quality> is highest quality, -f -b<quality> is fastest
         		    #command="lame -b"+quality+' '+external_source.replace(' ','\ ')+'/'+i.replace(' ','\ ').replace(r'(',r'\(').replace(r')',r'\)')+'/'+j.replace(' ','\ ').replace(r'(',r'\(').replace(r')',r'\)')+' '+destination.replace(' ','\ ')+'/'+i.replace(' ','\ ').replace(r'(',r'\(').replace(r')',r'\)')+'/'+j.replace(' ','\ ').replace(r'(',r'\(').replace(r')',r'\)')
-                            command=command="lame -b"+quality+' "'+external_source+'/'+i.encode('utf-8')+'/'+j.encode('utf-8')+'" "'+destination+'/'+i.encode('utf-8')+'/'+j.encode('utf-8')+'"'
+                            command=command="lame -b"+quality+' "'+external_source+'/'+i.decode('utf-8').encode('utf-8')+'/'+j.decode('utf-8').encode('utf-8')+'" "'+destination+'/'+i.decode('utf-8').encode('utf-8')+'/'+j.decode('utf-8').encode('utf-8')+'"'
                     	print command
-                        if multithread==False:os.system(command)
+                        if multithread==False:call(command,shell=True)
                         if multithread==True:jobs.append(command)
                         
             if multithread==True:
@@ -74,9 +75,8 @@ def update_path(value,v_or_c,quality,external_source,destination,all_dirs):
                 pool.join()
 
     for i in all_dirs:
-        if i not in values and os.path.isdir(destination+'/'+i.decode('utf-8').encode('utf-8')):
-            print 'rm -r "'+destination+'/'+i.decode('utf-8').encode('utf-8')+'"'
-            os.system('rm -r "'+destination+'/'+i.decode('utf-8').encode('utf-8')+'"')
+        if i not in values and os.path.isdir(destination+'/'+i):
+            call('rm -r "'+destination+'/'+i+'"',shell=True)
 
     return
         
