@@ -1,5 +1,5 @@
-## LinuxMusicSync
-# Python/Tkinter GUI to sync music from a source to a destination, with encoding by LAME.
+# LinuxMusicSync
+## Python/Tkinter GUI to sync music from a source to a destination, with encoding by LAME.
 
 Requires Tkinter. Written for Python 2. Also uses os, time, and glob, but you'll probably have those.
 
