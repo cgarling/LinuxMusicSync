@@ -1,5 +1,4 @@
 from Tkinter import *
-import numpy as np
 import os, time, glob
 
 multithread=False
@@ -128,7 +127,6 @@ for i in range(len(all_dirs)):
     times2.append(time.ctime(times1[i]))
     all_dirs[i]=all_dirs[i][len(external_source)+1:-1]
 
-a=dict(zip(all_dirs,np.zeros(len(all_dirs))))
 for i in range(len(all_dirs)):
     #Checkbutton(root,text=all_dirs[i],variable=a[all_dirs[i]]).grid(row=i+1,sticky=W)
     listbox.insert(i,all_dirs[i])
